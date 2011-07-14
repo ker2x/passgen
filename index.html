@@ -1,0 +1,448 @@
+<html>
+<head>
+
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<meta property="fb:admins" content="662042996">
+
+<style type="text/css">
+
+    body {
+        background-color: #dddddd;
+        font-family: Tahoma;
+    }
+
+    div.blue {
+        background-color: #E5FFFF;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 50px;
+    }
+
+    div.padded div {
+        padding: 10px;
+    }
+
+    a {
+        text-decoration: none;
+        font-size: 16px;
+        vertical-align: top;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    form input {
+        padding: 5px;
+        width: 400px;
+        height: 35px;
+        border: solid;
+        border-color: black;
+        border-width: 1px;
+        -moz-border-radius: 10px; /* Firefox */
+        -webkit-border-radius: 10px; /* Safari, Chrome */
+        border-radius: 10px; /* CSS3 */
+        font-size: 15px;
+    }
+
+    form input#pass {
+        color: #DDDDDD;
+    }
+
+    table td {
+        padding: 10px;
+    }
+
+    #text_fr {
+        display: none;
+    }
+
+    .lang_btn {
+        text-align: center;
+    }
+
+</style>
+
+<script type="text/javascript">
+//<![CDATA[
+function SHA1(msg) {
+
+    function rotate_left(n, s) {
+        var t4 = ( n << s ) | (n >>> (32 - s));
+        return t4;
+    }
+
+    ;
+
+    function lsb_hex(val) {
+        var str = "";
+        var i;
+        var vh;
+        var vl;
+
+        for (i = 0; i <= 6; i += 2) {
+            vh = (val >>> (i * 4 + 4)) & 0x0f;
+            vl = (val >>> (i * 4)) & 0x0f;
+            str += vh.toString(16) + vl.toString(16);
+        }
+        return str;
+    }
+
+    ;
+
+    function cvt_hex(val) {
+        var str = "";
+        var i;
+        var v;
+
+        for (i = 7; i >= 0; i--) {
+            v = (val >>> (i * 4)) & 0x0f;
+            str += v.toString(16);
+        }
+        return str;
+    }
+
+    ;
+
+
+    function Utf8Encode(string) {
+        string = string.replace(/\r\n/g, "\n");
+        var utftext = "";
+
+        for (var n = 0; n < string.length; n++) {
+
+            var c = string.charCodeAt(n);
+
+            if (c < 128) {
+                utftext += String.fromCharCode(c);
+            }
+            else if ((c > 127) && (c < 2048)) {
+                utftext += String.fromCharCode((c >> 6) | 192);
+                utftext += String.fromCharCode((c & 63) | 128);
+            }
+            else {
+                utftext += String.fromCharCode((c >> 12) | 224);
+                utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+                utftext += String.fromCharCode((c & 63) | 128);
+            }
+
+        }
+
+        return utftext;
+    }
+
+    ;
+
+    var blockstart;
+    var i, j;
+    var W = new Array(80);
+    var H0 = 0x67452301;
+    var H1 = 0xEFCDAB89;
+    var H2 = 0x98BADCFE;
+    var H3 = 0x10325476;
+    var H4 = 0xC3D2E1F0;
+    var A, B, C, D, E;
+    var temp;
+
+    msg = Utf8Encode(msg);
+
+    var msg_len = msg.length;
+
+    var word_array = new Array();
+    for (i = 0; i < msg_len - 3; i += 4) {
+        j = msg.charCodeAt(i) << 24 | msg.charCodeAt(i + 1) << 16 |
+                msg.charCodeAt(i + 2) << 8 | msg.charCodeAt(i + 3);
+        word_array.push(j);
+    }
+
+    switch (msg_len % 4) {
+        case 0:
+            i = 0x080000000;
+            break;
+        case 1:
+            i = msg.charCodeAt(msg_len - 1) << 24 | 0x0800000;
+            break;
+
+        case 2:
+            i = msg.charCodeAt(msg_len - 2) << 24 | msg.charCodeAt(msg_len - 1) << 16 | 0x08000;
+            break;
+
+        case 3:
+            i = msg.charCodeAt(msg_len - 3) << 24 | msg.charCodeAt(msg_len - 2) << 16 | msg.charCodeAt(msg_len - 1) << 8 | 0x80;
+            break;
+    }
+
+    word_array.push(i);
+
+    while ((word_array.length % 16) != 14) word_array.push(0);
+
+    word_array.push(msg_len >>> 29);
+    word_array.push((msg_len << 3) & 0x0ffffffff);
+
+
+    for (blockstart = 0; blockstart < word_array.length; blockstart += 16) {
+
+        for (i = 0; i < 16; i++) W[i] = word_array[blockstart + i];
+        for (i = 16; i <= 79; i++) W[i] = rotate_left(W[i - 3] ^ W[i - 8] ^ W[i - 14] ^ W[i - 16], 1);
+
+        A = H0;
+        B = H1;
+        C = H2;
+        D = H3;
+        E = H4;
+
+        for (i = 0; i <= 19; i++) {
+            temp = (rotate_left(A, 5) + ((B & C) | (~B & D)) + E + W[i] + 0x5A827999) & 0x0ffffffff;
+            E = D;
+            D = C;
+            C = rotate_left(B, 30);
+            B = A;
+            A = temp;
+        }
+
+        for (i = 20; i <= 39; i++) {
+            temp = (rotate_left(A, 5) + (B ^ C ^ D) + E + W[i] + 0x6ED9EBA1) & 0x0ffffffff;
+            E = D;
+            D = C;
+            C = rotate_left(B, 30);
+            B = A;
+            A = temp;
+        }
+
+        for (i = 40; i <= 59; i++) {
+            temp = (rotate_left(A, 5) + ((B & C) | (B & D) | (C & D)) + E + W[i] + 0x8F1BBCDC) & 0x0ffffffff;
+            E = D;
+            D = C;
+            C = rotate_left(B, 30);
+            B = A;
+            A = temp;
+        }
+
+        for (i = 60; i <= 79; i++) {
+            temp = (rotate_left(A, 5) + (B ^ C ^ D) + E + W[i] + 0xCA62C1D6) & 0x0ffffffff;
+            E = D;
+            D = C;
+            C = rotate_left(B, 30);
+            B = A;
+            A = temp;
+        }
+
+        H0 = (H0 + A) & 0x0ffffffff;
+        H1 = (H1 + B) & 0x0ffffffff;
+        H2 = (H2 + C) & 0x0ffffffff;
+        H3 = (H3 + D) & 0x0ffffffff;
+        H4 = (H4 + E) & 0x0ffffffff;
+
+    }
+
+    var temp = cvt_hex(H0) + cvt_hex(H1) + cvt_hex(H2) + cvt_hex(H3) + cvt_hex(H4);
+
+    return temp.toLowerCase();
+
+}
+
+// Sample usage for decimal to hex: base(255, '0123456789ABCDEF') == 'FF'
+// Common conversions such as above are easy to wrap with a helper function to speed use
+function base(dec, base) {
+    var len = base.length;
+    var ret = '';
+    while (dec > 0) {
+        ret = base.charAt(dec % len) + ret;
+        dec = Math.floor(dec / len);
+    }
+    return ret;
+}
+
+// Converts from nondecimal string to decimal
+// Example: unbase('FF', '0123456789ABCDEF') == 255
+function unbase(num, base) {
+    var len = base.length;
+    var ret = 0;
+    for (var x = 1; num.length > 0; x *= len) {
+        ret += base.indexOf(num.charAt(num.length - 1)) * x
+        num = num.substr(0, num.length - 1);
+    }
+    return ret;
+}
+
+function calc() {
+    var master = document.getElementById('master').value;
+    var application = document.getElementById('application').value;
+    var login = document.getElementById('login').value;
+
+    if ((master == '') || (application == '') || (login == '')) {
+        document.getElementById('pass').value = '';
+        return false;
+    }
+
+    var seed = 0;
+    do
+    {
+        pass = inner_calc(seed, master, application, login);
+        seed++;
+    }
+    while (
+            (!pass.match(/[0-9]+/)) || // pas de chiffres
+                    (!pass.match(/[a-z]+/)) || // pas de minuscules
+                    (!pass.match(/[A-Z]+/)) || // pas de majuscules
+                    (pass.match(/^[0-9a-zA-Z]+$/)) // pas de caractères spéciaux
+            );
+
+    document.getElementById('pass').value = pass;
+}
+
+function inner_calc(seed, master, application, login) {
+    var pass = SHA1(seed + master + application + login);
+    pass = unbase(pass, '0123456789abcdef');
+    pass = base(pass, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@&!-_$%/:;.,?+=()[]{}~^<>');
+    pass = pass.substring(0, 12);
+
+    return pass;
+}
+
+function show_man(lang) {
+    hide_man();
+    document.getElementById('text_' + lang).style.display = 'block';
+}
+
+function hide_man() {
+    document.getElementById('text_fr').style.display = 'none';
+    document.getElementById('text_en').style.display = 'none';
+
+}
+
+//]]>
+</script>
+<title>Deterministic secure password generator</title>
+</head>
+<body>
+
+<h1>
+    Deterministic secure password generator
+</h1>
+
+<form>
+    <div class="blue">
+        <table>
+            <tbody>
+            <tr>
+                <td width="35%">Master passphrase</td>
+                <td><input id="master" onkeyup="calc();" type="password"></td>
+            </tr>
+            <tr>
+                <td>Application name</td>
+                <td><input id="application" onkeyup="calc();" type="text"></td>
+            </tr>
+            <tr>
+                <td>Login or email</td>
+                <td><input id="login" onkeyup="calc();" type="text"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="blue">
+        <table>
+            <tbody>
+            <tr>
+                <td width="35%">Your secure password</td>
+                <td><input id="pass" type="text"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="blue padded" id="man">
+        <div class="lang_btn">
+            <a href="#" id="btn_en" onclick="show_man('en');">English Version</a> |
+            <a href="#" id="btn_fr" onclick="show_man('fr');">Version Francaise</a>
+        </div>
+        <div style="display: block;" id="text_en">
+            <p>
+                <strong>Why use this ?</strong> Because you don't trust sites that
+                retain your password, because you are not able to remember more than one
+                password whereas you should use a different password on each site you
+                visit.
+            </p>
+
+            <p>
+                <strong>Is this site secure ?</strong> This site does not use external
+                resources, nor submit forms to a distant server. You can even disconnect
+                your computer from the network when this page is loaded if you don't
+                trust me (and you shouldn't...)
+            </p>
+
+            <p><strong>How to generate a password ?</strong> Choose a long master
+                passphrase that you will remember, enter the application name or the
+                server name (e.g. "facebook", "foe.bar.com"), then the login used on
+                this site ("johndoe@gmail.com", "root") and copy/paste the password
+                generated for you. If you enter again the same values, you will get the
+                same password. So remember your master passphrase well, do not write it
+                down, do not use it as a password on any website, in one word : keep it
+                secure !
+            </p>
+
+            <p><strong>What kind of passwords does it generate ?</strong> The
+                passwords generated by this site contain 12 characters, with at least 1
+                lowercase letter, 1 uppercase letter, 1 numeric and 1 special character.
+            </p>
+
+            <p><strong>What if this site disappears ?</strong> Well, this site is
+                made of this sole page, I encourage everyone to copy it on other web
+                servers. This is the only but affordable guarantee that you will still
+                be able to generate your passwords in the future.
+            </p>
+        </div>
+
+        <div style="display: none;" id="text_fr">
+            <p>
+                <strong>Pourquoi ?</strong> Parce que vous n'avez pas confiance aux sites
+                qui retiennent vos mots de passe pour vous, parce que vous ne devriez pas
+                utiliser le même mot de passe pour plusieurs services et qu'il y a trop
+                de passe differents a retenir.
+            </p>
+
+            <p>
+                <strong>Ce site est il sûr ?</strong> Ce site n'utilise pas de ressources externe
+                et ne transmet aucune information. Cette page, que vous pouvez enregistrer sur votre
+                ordinateur, fonctionne même en etant deconnecté d'internet. Essayez !
+            </p>
+
+            <p>
+                <strong>Comment l'utiliser ?</strong> TODO!
+            </p>
+
+            <p>
+                <strong>Quel type de mot de passe est généré ?</strong> TODO!
+            </p>
+
+            <p>
+                <strong>Et si ce site disparait ?</strong> Ce site est composé de cette unique page.
+                J'encourage tout le monde à la copier sur d'autre sites et de l'enregistrer chez soi.
+                C'est la seule garantie que vous pourrez continuer a generer vos mots de passe dans
+                l'avenir.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="blue padded">
+        <div>
+            <p>
+                Created by : <img
+                    src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAK8AAACvABQqw0mAAAABZ0RVh0Q3JlYXRpb24gVGltZQAxMS8xNC8wOb/e6gkAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzQGstOgAAACc0lEQVQ4jaWUv04bQRCHv9m9vzaWEtkIUkAQNOnpeAD6vAHpwgNEaaEjUtqUKHkDXsRNmkgp7BBQBMExSQRnzt692xSGw/YZxxIjrW5vtPPNb2dnVwCazeYOsAc853H2Hdjb3Nz8JM1mc6der39cXFykWq0+ipokCZ1Oh263+0oB+41Gg0qlgnPuUaNSqdBoNAD2PWA1jmPyPC8yO+fo2ZzMCTmgyAkEQk8jIjNVx3EMsOoB06GiC1+OInWQDQzRHHAADyDLssJhjMEqDxF43fJop8LLes7ucsbAZLg8R2uNwqFmJCgpNsYgcQRAOx0Gtm6/EoRYwN4tziyBy9GqnKAEttaiJxZdZ/A5GQ9eDmDJ9+hbQ2AtSqnZYOdcKXs7Fd4ce2O+qoajFwa0x6DXIwiC2eDR+SxLbo9FRDDW4nnjiecCVzVsRPc7WVCO7afD/8FND5fnpbi5wBuR4/2aLfmtMVx1OyxUK6U4dQcbHZPWSqXojDFVvk8YVwpBo/FTFVszwPMDlnzHTyMkGey27mtY1bD9ZNjb4UINe/33/4qdc6S9HgC7z6YfZJLBUXfYXn4YYa0tKS6BRYSr7gXWDNiq5eytZiz55RZcvz3MQXozFVwqhYigleLsuM3y2jpbtYCt2sMtmCYJzrnppciyrBjOOXzfRwucfP3Cn18dBv1+CXjTS7i8OOf3xRmTjKmK71SHYQjA5fkPzk++FfUvdqU1YRgSxzEiMrWPT621K5N3XUQIggCtNVEUla66UgqtNVrr4qEfEXnqAQf9fv+D7/ulhwQogh+ySagxBuDAAw6NMWKMeSsiKw8S5jDn3CnwDjj8B9H5uefkHlhmAAAAAElFTkSuQmCC"
+                    alt="Follow me on Twitter"> <a href="http://twitter.com/#!/lioneltressens">@ltr</a> <br/>
+                Contributors : <a href="https://github.com/ker2x">ker2x</a>, you?<br/>
+                License : <a href="http://sam.zoy.org/wtfpl/COPYING">WTFPL</a><br/>
+            </p>
+        </div>
+    </div>
+
+</form>
+
+</body>
+</html>
