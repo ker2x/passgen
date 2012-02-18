@@ -1,7 +1,7 @@
 <html>
 <head>
 
-<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta property="fb:admins" content="662042996">
 
 <style type="text/css">
@@ -289,7 +289,7 @@ function calc() {
             (!pass.match(/[0-9]+/)) || // pas de chiffres
                     (!pass.match(/[a-z]+/)) || // pas de minuscules
                     (!pass.match(/[A-Z]+/)) || // pas de majuscules
-                    (pass.match(/^[0-9a-zA-Z]+$/)) // pas de caract�res sp�ciaux
+                    (pass.match(/^[0-9a-zA-Z]+$/)) // pas de caract�res sp�ciaux
             );
 
     document.getElementById('pass').value = pass;
@@ -402,27 +402,37 @@ function hide_man() {
             <p>
                 <strong>Pourquoi ?</strong> Parce que vous n'avez pas confiance aux sites
                 qui retiennent vos mots de passe pour vous, parce que vous ne devriez pas
-                utiliser le m�me mot de passe pour plusieurs services et qu'il y a trop
+                utiliser le même mot de passe pour plusieurs services et qu'il y a trop
                 de passe differents a retenir.
             </p>
 
             <p>
-                <strong>Ce site est il s�r ?</strong> Ce site n'utilise pas de ressources externe
+                <strong>Ce site est il sûr ?</strong> Ce site n'utilise pas de ressources externe
                 et ne transmet aucune information. Cette page, que vous pouvez enregistrer sur votre
-                ordinateur, fonctionne m�me en etant deconnect� d'internet. Essayez !
+                ordinateur, fonctionne même en étant deconnecté d'Internet. Essayez !
             </p>
 
             <p>
-                <strong>Comment l'utiliser ?</strong> TODO!
+                <strong>Comment l'utiliser ?</strong> Choisissez un mot de passe maître
+                dont vous vous souviendrez, et entrez le nom de l'application ou du serveur
+                (par exemple "facebook', 'toto.exemple.com"), puis le nom d'utilisateur
+                utilisé sur ce site ("johndoe@gmail.com", "root") et copiez-collez le
+                mot de passe généré. Si vous entrez à nouveau les mêmes valeurs, vous
+                obtiendrez le même mot de passe. Donc, souvenez-vous du mot de passe
+                maître, et ne l'écrivez nul part, ne l'utilisez sur aucun site. En
+                un mot : gardez-le secret !
             </p>
 
             <p>
-                <strong>Quel type de mot de passe est g�n�r� ?</strong> TODO!
+                <strong>Quel type de mot de passe est généré ?</strong> Les mots de
+                passe générés par ce site contiennent douze caractères, avec au moins
+                une lettre minuscule, une lettre majuscule, un nombre, et un
+                caractère spécial.
             </p>
 
             <p>
-                <strong>Et si ce site disparait ?</strong> Ce site est compos� de cette unique page.
-                J'encourage tout le monde � la copier sur d'autre sites et de l'enregistrer chez soi.
+                <strong>Et si ce site disparait ?</strong> Ce site est composé de cette unique page.
+                J'encourage tout le monde à la copier sur d'autre sites et de l'enregistrer chez soi.
                 C'est la seule garantie que vous pourrez continuer a generer vos mots de passe dans
                 l'avenir.
             </p>
